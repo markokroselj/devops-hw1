@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "app_api"
+version = "1.0.0"
+description = "REST api for the app."
+requires-python = ">=3.9"
+dependencies = [
+  "Flask",
+  "Flask-SQLAlchemy",
+  "PyMySQL",
+  "python-dotenv",
+  "waitress"
+]
+
+[project.scripts]
+app-api = "app:main"

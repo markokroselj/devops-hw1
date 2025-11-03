@@ -6,7 +6,7 @@ SCRIPT
 Vagrant.configure("2") do |config|
   config.vm.box = "hashicorp-education/ubuntu-24-04"
   config.vm.box_version = "0.1.0"
-  config.provision = "shell", inline: $script
+  config.vm.provision "shell", inline: $script
 
   config.vm.provider "virtualbox" do |v|
     v.name = "devops-hw1-ubuntu24-vm"

@@ -1,6 +1,19 @@
-$script = <<-'SCRIPT'
+DB_HOST =
+DB_USERNAME =
+DB_PASSWORD =
+DB_NAME = 
+APP_PORT =
+DOMAIN=
+
+$script = <<-SCRIPT
 sudo apt-get update
 sudo apt-get install -y caddy
+
+sudo apt-get install -y mysql-server
+sudo mysql -u root -e "CREATE USER '#{DB_USERNAME}'@'localhost' IDENTIFIED WITH caching_sha2_password BY '#{DB_PASSWORD}';"
+sudo mysql -u root -e "CREATE DATABASE #{DB_NAME}";
+sudo mysql -u root -e "GRANT ALL PRIVILEGES ON  #{DB_NAME}.* TO '#{DB_USERNAME}'@'#{DB_HOST}'; FLUSH PRIVILEGES;"
+sudo mysql -u #{DB_USERNAME} -p#{DB_PASSWORD} #{DB_NAME} < /vagrant/app/db/dbsetup.sql
 SCRIPT
 
 Vagrant.configure("2") do |config|

@@ -1,6 +1,6 @@
 $script = <<-'SCRIPT'
-echo "These are my \"quotes\"! I am provisioning my guest."
-date > /etc/vagrant_provisioned_at
+sudo apt-get update
+sudo apt-get install -y caddy
 SCRIPT
 
 Vagrant.configure("2") do |config|

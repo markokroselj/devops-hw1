@@ -21,6 +21,35 @@ echo "export DB_PASSWORD=#{DB_PASSWORD}" >> /home/vagrant/.bashrc
 echo "export DB_NAME=#{DB_NAME}" >> /home/vagrant/.bashrc
 echo "export APP_PORT=#{APP_PORT}" >> /home/vagrant/.bashrc
 echo "export DOMAIN=#{DOMAIN}" >> /home/vagrant/.bashrc
+
+sudo apt-get  install -y pip
+sudo apt-get install -y python3.12-venv
+cp /vagrant/app/api -r ~/
+cd ~/api
+python3 -m venv .venv
+source .venv/bin/activate
+pip install .
+
+sudo tee /etc/systemd/system/apiapp.service > /dev/null <<'EOF'
+[Unit]
+Description=Api app
+After=network.target
+
+[Service]
+User=vagrant
+Group=vagrant
+WorkingDirectory=/home/vagrant/api
+Environment="PATH=/home/vagrant/api/.venv/bin"
+ExecStart=/home/vagrant/api/.venv/bin/python3 /home/vagrant/api/app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable apiapp
+sudo systemctl start apiapp
 SCRIPT
 
 Vagrant.configure("2") do |config|

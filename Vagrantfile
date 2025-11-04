@@ -24,10 +24,10 @@ echo "export DOMAIN=#{DOMAIN}" >> /home/vagrant/.bashrc
 
 sudo apt-get  install -y pip
 sudo apt-get install -y python3.12-venv
-cp /vagrant/app/api -r ~/
-cd ~/api
-python3 -m venv .venv
-source .venv/bin/activate
+cp /vagrant/app/api -r /home/vagrant/
+cd /home/vagrant/api/
+python3 -m venv /home/vagrant/api/.venv
+source /home/vagrant/api/.venv/bin/activate
 pip install .
 
 sudo tee /etc/systemd/system/apiapp.service > /dev/null <<'EOF'

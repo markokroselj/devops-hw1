@@ -40,6 +40,11 @@ User=vagrant
 Group=vagrant
 WorkingDirectory=/home/vagrant/api
 Environment="PATH=/home/vagrant/api/.venv/bin"
+Environment="DB_HOST=#{DB_HOST}"
+Environment="DB_USERNAME=#{DB_USERNAME}"
+Environment="DB_PASSWORD=#{DB_PASSWORD}"
+Environment="DB_NAME=#{DB_NAME}"
+Environment="APP_PORT=#{APP_PORT}"
 ExecStart=/home/vagrant/api/.venv/bin/python3 /home/vagrant/api/app.py
 Restart=always
 

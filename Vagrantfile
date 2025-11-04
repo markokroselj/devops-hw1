@@ -55,6 +55,20 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable apiapp
 sudo systemctl start apiapp
+
+sudo mkdir /var/www/app
+sudo chown -R caddy:caddy /var/www/app
+sudo tee /etc/caddy/Caddyfile > /dev/null <<'EOF'
+#{DOMAIN} {
+        root * /var/www/app
+        file_server
+
+        handle_path /api/* {
+                reverse_proxy localhost:#{APP_PORT}
+    }
+}
+EOF
+sudo systemctl reload caddy
 SCRIPT
 
 Vagrant.configure("2") do |config|

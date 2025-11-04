@@ -14,6 +14,13 @@ sudo mysql -u root -e "CREATE USER '#{DB_USERNAME}'@'localhost' IDENTIFIED WITH 
 sudo mysql -u root -e "CREATE DATABASE #{DB_NAME}";
 sudo mysql -u root -e "GRANT ALL PRIVILEGES ON  #{DB_NAME}.* TO '#{DB_USERNAME}'@'#{DB_HOST}'; FLUSH PRIVILEGES;"
 sudo mysql -u #{DB_USERNAME} -p#{DB_PASSWORD} #{DB_NAME} < /vagrant/app/db/dbsetup.sql
+
+echo "export DB_HOST=#{DB_HOST}" >> /home/vagrant/.bashrc
+echo "export DB_USERNAME=#{DB_USERNAME}" >> /home/vagrant/.bashrc
+echo "export DB_PASSWORD=#{DB_PASSWORD}" >> /home/vagrant/.bashrc
+echo "export DB_NAME=#{DB_NAME}" >> /home/vagrant/.bashrc
+echo "export APP_PORT=#{APP_PORT}" >> /home/vagrant/.bashrc
+echo "export DOMAIN=#{DOMAIN}" >> /home/vagrant/.bashrc
 SCRIPT
 
 Vagrant.configure("2") do |config|

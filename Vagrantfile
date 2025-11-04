@@ -56,7 +56,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable apiapp
 sudo systemctl start apiapp
 
-sudo mkdir /var/www/app
+sudo mkdir -p /var/www/app
 sudo chown -R caddy:caddy /var/www/app
 sudo tee /etc/caddy/Caddyfile > /dev/null <<'EOF'
 #{DOMAIN} {

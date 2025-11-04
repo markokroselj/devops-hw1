@@ -59,8 +59,6 @@ sudo systemctl start apiapp
 sudo mkdir -p /var/www/app
 sudo chown -R caddy:caddy /var/www/app
 sudo tee /etc/caddy/Caddyfile > /dev/null <<'EOF'
-
-sudo echo "<h1>Hi 👋</h1> <em>#{DOMAIN}</em>" | sudo tee /var/www/app/index.html > /dev/null
 #{DOMAIN} {
         root * /var/www/app
         file_server
@@ -71,6 +69,8 @@ sudo echo "<h1>Hi 👋</h1> <em>#{DOMAIN}</em>" | sudo tee /var/www/app/index.ht
 }
 EOF
 sudo systemctl reload caddy
+
+sudo echo "<h1>Hi 👋</h1> <em>#{DOMAIN}</em>" | sudo tee /var/www/app/index.html > /dev/null
 SCRIPT
 
 Vagrant.configure("2") do |config|

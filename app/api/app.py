@@ -26,7 +26,7 @@ class Location(db.Model):
     __tablename__ = 'Location'
     Location_ID = db.Column(db.Integer, primary_key=True)
     Location_name = db.Column(db.String(100))
-
+    Location_link = db.Column(db.String(2048))
 
 class Type(db.Model):
     __tablename__ = 'Type'
@@ -56,7 +56,8 @@ def get_vehicles():
             "id": v.Vehicle_ID,
             "type": v.type.Type,
             "name": v.Name,
-            "location": v.location.Location_name
+            "location": v.location.Location_name,
+            "location_link": v.location.Location_link
         })
     return jsonify(result)
 
@@ -71,7 +72,7 @@ def get_types():
 @app.route('/get-locations', methods=['GET'])
 def get_locations():
     locations = Location.query.all()
-    result = [{"id": l.Location_ID, "location": l.Location_name} for l in locations]
+    result = [{"id": l.Location_ID, "location": l.Location_name, "location_link": l.Location_link} for l in locations]
     return jsonify(result)
 
 @app.route('/get/vehicle/<int:vehicle_id>', methods=['GET'])

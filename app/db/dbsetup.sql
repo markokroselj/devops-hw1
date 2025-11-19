@@ -21,6 +21,7 @@ create table Location
 (
    Location_ID          int not null auto_increment,
    Location_name        varchar(100),
+   Location_link        VARCHAR(2048),
    primary key (Location_ID)
 );
 
@@ -54,4 +55,6 @@ alter table Vehicle add constraint FK_is_at foreign key (Location_ID)
       
 /*Insert initial types and locations */     
 insert into Type (Type) values ('Ship'), ('Booster');
-insert into Location (Location_name) values ('Production site'), ('Launch site');
+insert into Location (Location_name, Location_link) values ('Production site', 'https://www.openstreetmap.org/export/embed.html?bbox=-97.189444%2C25.985445%2C-97.187444%2C25.987445&layer=mapnik&marker=25.986445%2C-97.188444
+'), ('Launch site', 'https://www.openstreetmap.org/export/embed.html?bbox=-97.157568%2C25.996227%2C-97.155568%2C25.998227&layer=mapnik&marker=25.997227%2C-97.156568
+');

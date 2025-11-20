@@ -70,7 +70,7 @@ sudo tee /etc/caddy/Caddyfile > /dev/null <<'EOF'
 EOF
 sudo systemctl reload caddy
 
-sudo cp /home/vagrant/app/frontend -r /var/www/app/
+sudo cp /vagrant/app/frontend -r /var/www/app/
 SCRIPT
 
 Vagrant.configure("2") do |config|

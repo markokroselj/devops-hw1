@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add new - Vehicle inventory manager</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="assets/logo.svg" type="image/svg+xml">
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <a href="/"><img src="assets/logo.svg" alt="SpaceX logo" class="logo-image"></a>
+        </div>
+        <div>
+            <h1>Vehicle inventory manager</h1>
+        </div>
+        <div>
+            <a href="sources.html">Sources</a>
+        </div>
+    </header>
+    <main class="new-vehicle-main">
+        <form id="add-vehicle-form">
+            <fieldset>
+                <legend>Add a new vehicle</legend>
+
+                <div>
+                    <label for="type">Vehicle type: </label>
+                    <select name="type" id="type"> </select>
+                </div>
+
+                <div>
+                    <label for="name">Name: </label>
+                    <input type="text" autocomplete="off" required id="name">
+                </div>
+
+                <div>
+                    <label for="locations">Location:</label>
+                    <select id="locations"></select>
+                </div>
+                <button>Add</button>
+            </fieldset>
+        </form>
+    </main>
+    <footer>
+        <p>Web Technologies HW1 - © <a href="https://github.com/markokroselj">Marko Krošelj</a> 2024 </p>
+    </footer>
+    <script type="module" src="js/add-vehicle.js"></script>
+</body>
+
+</html>

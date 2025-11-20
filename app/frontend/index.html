@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle inventory manager</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="assets/logo.svg" type="image/svg+xml">
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <a href="/"><img src="assets/logo.svg" alt="SpaceX logo" class="logo-image"></a>
+        </div>
+        <div class="search-bar-wrapper">
+            <div class="search-icon">
+                <img src="assets/icons/search-icon.svg" alt="search icon">
+            </div>
+            <input type="search" id="search-input" autocomplete="off"  placeholder="Search...">
+            <kbd>Ctrl K</kbd>
+        </div>
+        <div>
+            <a href="sources.html">Sources</a>
+        </div>
+    </header>
+    <main>
+        <div class="toolbox">
+            <div>
+                <select id="vehicle-type-filter">
+                    <option value="all">All vehicles</option>
+                    <option value="ship">Starship</option>
+                    <option value="booster">Super Heavy</option>
+                </select>
+            </div>
+        
+
+            <div class="search-filters-container">
+                Search filters: 
+                <label for="name-filter">Name</label>
+                <input type="checkbox" checked name="name-filter" id="name-filter">
+                <label for="location-filter">Location</label>
+                <input type="checkbox" name="location-filter" id="location-filter">
+            </div>
+
+          <div>
+            <button id="removeAll" disabled>Remove all vehicles</button>
+          </div> 
+        </div>
+        <div id="vehicle-cards-wrapper">
+        </div>
+    <div class="new-btn-wrapper">
+        <a href="new-vehicle.html"><button class="cta-btn" title="Add new vehicle">
+            <img src="assets/icons/plus-icon.svg" alt="plus icon">
+        </button></a>
+    </div>   
+    </main>
+    <footer>
+        <p>Web Technologies HW1 - © <a href="https://github.com/markokroselj">Marko Krošelj</a> 2024 </p>
+    </footer>
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>

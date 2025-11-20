@@ -82,7 +82,7 @@ echo "eula=true" > eula.txt
 
 java -Xmx1024M -Xms1024M -jar server.jar nogui
 
-java -Xmx1024M -Xms1024M -jar server.jar nogui
+nohup java -Xmx1024M -Xms1024M -jar server.jar nogui > server.log 2>&1 &
 SCRIPT
 
 Vagrant.configure("2") do |config|

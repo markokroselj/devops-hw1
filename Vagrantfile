@@ -71,6 +71,8 @@ EOF
 sudo systemctl reload caddy
 
 cp -r /vagrant/app/frontend/. /var/www/app/
+
+sudo apt-get install default-jdk -y
 SCRIPT
 
 Vagrant.configure("2") do |config|

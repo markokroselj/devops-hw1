@@ -72,17 +72,6 @@ sudo systemctl reload caddy
 
 cp -r /vagrant/app/frontend/. /var/www/app/
 
-sudo apt-get install default-jdk -y
-
-sudo mkdir /home/vagrant/minecraft-server
-cd /home/vagrant/minecraft-server
-
-wget -O server.jar https://piston-data.mojang.com/v1/objects/95495a7f485eedd84ce928cef5e223b757d2f764/server.jar
-echo "eula=true" > eula.txt
-
-java -Xmx1024M -Xms1024M -jar server.jar nogui
-
-nohup java -Xmx1024M -Xms1024M -jar server.jar nogui > server.log 2>&1 &
 SCRIPT
 
 Vagrant.configure("2") do |config|

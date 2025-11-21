@@ -101,7 +101,15 @@ Application stack is deployed inside virtual machine using shell script inside V
 
 Virtual machine is started using ``sudo vagrant up``. Sudo is used so privileged ports 80 and 443 work. 
 
+During development I constantly committed and pushed Vagrant file and other changes to GitHub. To get the changes on virtual server I used command ``git fetch origin && git reset --hard origin/main && git clean -fd``. This fetched changes even though Vagrant file was changed on the server. 
 
+# Domain
+For app domain I created new subdomain. Inside my domain DNS managed I created new A record and pointed it to the host IP address.
 
-
-
+# Usage
+Make sure you have Git, Vagrant and VirtualBox installed.
+- point domain to the IP of your machine
+- clone this repository ``git clone https://github.com/markokroselj/devops-hw1.git``
+- cd into it ``cd devops-hw1``
+- edit Vagrantfile and add variables. Set DB_NAME to vehicles_db. DB_HOST needs to be localhost. DB_USERNAME and DB_PASSWORD can be anything.
+- start virtual machine using ``sudo vagrant up``

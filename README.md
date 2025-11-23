@@ -1,4 +1,4 @@
-# Automatic web application deployment on virtual machine using [Vagrant](https://developer.hashicorp.com/vagrant). 
+# Automatic web application deployment on virtual machine using [Vagrant](https://developer.hashicorp.com/vagrant) and [Cloud-init](https://cloud-init.io/) + [Multipass](https://canonical.com/multipass) 
 
 For first homework for DevOps class I set up [Vagrant file](https://developer.hashicorp.com/vagrant/docs/vagrantfile) to automatically provision a virtual machine and deploy a simple web application on it. 
 
@@ -116,4 +116,55 @@ Make sure you have Git, Vagrant and VirtualBox installed.
 
 ## Vagrant usage demo
 [YouTube video of app deploy using Vagrantfile](https://www.youtube.com/watch?v=2hj3_0td8bE)
+
+
+
+# Cloud-init
+
+# Host configuration
+Virtual machine with the application was deployed on regular PC running Windows 10. It has 8 cores and 16GB of RAM.
+
+For Hypervisor, we used Windows Hyper-V.
+
+On host machine, we installed the latest verison of Multipass only. No further configuration was required.
+
+# Cloud-init file
+We created cloud-config.yaml file that is passed on as an argument to --cloud-init switch when launching a virtual machine with Multipass.
+
+# Hardware provisioning
+Hardware was provisioned by default, to 1 core and ~1GB of RAM.
+
+# Port forwarding
+To make the web application accessible from outside the local network, and for Caddy to issue a valid certificate, we launched the virtual machine in bridged network mode and then forwarded ports 80 and 443 directly to the guest. Due to a mix of Caddy certificate and router constraints, the web application was only accessible from outside the local network. 
+
+# Application provisioning
+Application stack was deployed inside virtual machine using cloud-config.yaml file, which pre-configures the virtual machine during boot according to our needs.
+
+Environment variables were defined in plain text inside ```/root/secrets.env```, which was then moved to Ubuntu user's home directory and claimed by Ubuntu user. The variables are supposed to be added to the cloud-config.yaml right before launching a virtual machine, therefore reducing the risk of being compromised by someone who gets access to the file. The security could be improved by utilizing a secrets Vault, like for example, Bitwarden Secrets Manager, but this approach might not be much better, since we would still have to pass the access token to the virtual machine/config file right before launch and we also might have to store the secrets in a file regardless, because the secrets are required by many components that make our application.
+
+### Script
+The config file first installs the necessary packages.
+
+1. Git
+    Git will be used to clone the GitHub repository, which includes files that our application will serve.
+2. Caddy
+    Like mentioned before, Caddy will serve files from ```/var/www/app``` directory, redirect API calls to Flask API and also configure HTTPS and SSL certificates automatically.
+3. MySQL server
+    MySQL server will create a user and their password, create a database that will be used by the web application, and grant privileges for this database to the user. Then, the service will run all SQL statements from ```/home/ubuntu/db/dbsetup.sql```, which define the tables and rows in the database.
+4. Python, pip, venv
+    Python, pip, and the virtual environment are used to set up a self-contained environment for our API. This ensures that the service has all the packages it needs and can start automatically, without requiring manual setup or interfering with other Python projects on the system.
+
+In the ```runcmd```, we first set a static IP to the bridged network interface, due to the port forwarding that we set up on the router earlier. We then clone the GitHub repository and organize the files into their respected directories. We then initialize the Python virtual environment, move the secrets file to Ubuntu user's home directory, wait for MySQL to start up and run the SQL statements. Finally, we configure the ```/etc/caddy/Caddyfile``` to serve files from ```/var/www/app``` and forward API calls to the backend service running locally. Then we simply reload Caddy and start our API service. After these steps, the web application should be online and running.
+
+# Domain
+The same subdomain as before was used, but this time pointing to the public IP of the regular PC.
+
+# Usage
+Multipass and Hypervisor is required on the host machine.
+- point the domain to your public IP
+- move into the folder, where cloud-config.yaml file is present
+- fill in the missing secret credentials in the file
+- run a Command Prompt from inside this folder
+- find out the main network interface that the host uses and run ```multipass set local.bridged-network=<name_of_interface>```
+- finally, run ```multipass launch --name <name> --cloud-init cloud-config.yam
 

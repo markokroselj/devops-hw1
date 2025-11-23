@@ -48,7 +48,8 @@ runcmd:
   - mkdir /home/ubuntu/api
   - mkdir /home/ubuntu/db
   - sudo cp -r /devops-hw1/app/frontend/. /var/www/app
-  - cp -r /devops-hw1/app/api/. /home/ubuntu/api
+  - cp -r /devops-hw1/app/api/project.toml /home/ubuntu/api
+  - cp -r /devops-hw1/cloud-init/app.py /home/ubuntu/api
   - cp -r /devops-hw1/app/db/. /home/ubuntu/db
 
   - |

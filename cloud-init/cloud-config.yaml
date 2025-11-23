@@ -1,0 +1,95 @@
+#cloud-config
+packages:
+  - git
+  - caddy
+  - mysql-server
+  - python3
+  - python3-pip
+  - python3-venv
+
+write_files:
+  - path: /root/secrets.env
+    permissions: 0600
+    content: |
+      DB_HOST=
+      DB_USERNAME=
+      DB_PASSWORD=
+      DB_NAME=
+      APP_PORT=
+      DOMAIN=
+
+  - path: /etc/systemd/system/apiapp.service
+    content: |
+      [Unit]
+      Description=API Service
+      After=network.target
+
+      [Service]
+      User=ubuntu
+      Group=ubuntu
+      WorkingDirectory=/home/ubuntu/api
+      Environment="PATH=/home/ubuntu/api/.venv/bin"
+      EnvironmentFile=/home/ubuntu/secrets.env
+      ExecStart=/home/ubuntu/api/.venv/bin/python3 /home/ubuntu/api/app.py
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+
+runcmd:
+  - sudo ip addr flush dev eth1
+  - sudo ip addr add 172.31.1.139/24 dev eth1
+  - sudo ip link set eth1 up
+  - sudo ip route del default
+  - sudo ip route add default via 172.31.1.1 dev eth1
+
+  - git clone https://github.com/markokroselj/devops-hw1.git /devops-hw1
+  - sudo mkdir -p /var/www/app
+  - mkdir /home/ubuntu/api
+  - mkdir /home/ubuntu/db
+  - sudo cp -r /devops-hw1/app/frontend/. /var/www/app
+  - cp -r /devops-hw1/app/api/. /home/ubuntu/api
+  - cp -r /devops-hw1/app/db/. /home/ubuntu/db
+
+  - |
+    cd /home/ubuntu/api
+    python3 -m venv .venv
+    ./.venv/bin/pip install .
+
+  - sudo mv /root/secrets.env /home/ubuntu/secrets.env
+  - sudo chown ubuntu:ubuntu /home/ubuntu/secrets.env
+
+  - |
+    until sudo mysqladmin ping &>/dev/null; do
+      echo "Waiting for MySQL..."
+      sleep 2
+    done
+
+    . /home/ubuntu/secrets.env
+
+    sudo mysql -u root <<MYSQL_SCRIPT
+    CREATE USER '${DB_USERNAME}'@'localhost' IDENTIFIED WITH caching_sha2_password BY '${DB_PASSWORD}';
+    CREATE DATABASE ${DB_NAME};
+    GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USERNAME}'@'localhost';
+    FLUSH PRIVILEGES;
+    MYSQL_SCRIPT
+
+    mysql -h localhost -u ${DB_USERNAME} -p${DB_PASSWORD} ${DB_NAME} < /home/ubuntu/db/dbsetup.sql
+
+    cat <<EOF | sudo tee /etc/caddy/Caddyfile
+    ${DOMAIN} {
+        root * /var/www/app
+        file_server
+
+        handle_path /api/* {
+            reverse_proxy localhost:${APP_PORT}
+        }
+    }
+    EOF
+
+  - sudo chown -R caddy:caddy /var/www/app
+  - sudo systemctl reload caddy
+
+  - sudo systemctl daemon-reload
+  - sudo systemctl enable apiapp
+  - sudo systemctl start apiapp

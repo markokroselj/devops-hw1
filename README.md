@@ -113,3 +113,7 @@ Make sure you have Git, Vagrant and VirtualBox installed.
 - cd into it ``cd devops-hw1``
 - edit Vagrantfile and add variables. Set DB_NAME to vehicles_db. DB_HOST needs to be localhost. DB_USERNAME and DB_PASSWORD can be anything.
 - start virtual machine using ``sudo vagrant up``
+
+## Vagrant usage demo
+[YouTube video of app deploy using Vagrantfile](https://www.youtube.com/watch?v=2hj3_0td8bE)
+

@@ -166,5 +166,7 @@ Multipass and Hypervisor is required on the host machine.
 - fill in the missing secret credentials in the file
 - run a Command Prompt from inside this folder
 - find out the main network interface that the host uses and run ```multipass set local.bridged-network=<name_of_interface>```
-- finally, run ```multipass launch --name <name> --cloud-init cloud-config.yam
+- finally, run ```multipass launch --name <name> --cloud-init cloud-config.yam```
 
+[Usage demo video](https://drive.google.com/file/d/1gZkffDfWlcnnYtKCqZ0_SedRc7nTyYAk/view)
+[Web app deployed using cloud-init](https://drive.google.com/file/d/1J4sv55dBQdwBHHq9ndLKOZ2k2WT2MuXc/view)
